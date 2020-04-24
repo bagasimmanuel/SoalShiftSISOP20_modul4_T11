@@ -10,6 +10,33 @@
 #include <sys/time.h>
 static const char * dirpath = "/home/bagasimmanuel/Documents/Fuse";
 
+
+int isEncv1(char* path){
+  char* encv = "encv1_";
+  int n = sizeof(encv)/sizeof(encv[0]);
+  char bufferPath[1000];
+  strcpy(bufferPath,path);
+  char* token = strtok(path,"/");
+
+  while(token != NULL){
+    int flag = 0;
+    char buffer[1000];
+    strcpy(buffer,token);
+    // printf("%s\n",buffer);
+    for(int i = 0; i < n-2;i++){
+      // printf("%c AND %c \n",buffer[i],encv[i]);
+      if(buffer[i] != encv[i]){
+        flag = 1;
+        break;
+      }
+    }
+    if(flag == 0){
+      return 1;
+    }
+    token = strtok(NULL,"/");
+  }
+}
+
 void toLogFile(char* level,char* arg,int n,char* path){
 
   FILE *f;
@@ -45,6 +72,33 @@ void toLogFile(char* level,char* arg,int n,char* path){
 
 }
 
+void enkripsi(char* nama)
+{
+    char baseKey[100] = "9(ku@AW1[Lmvgax6q`5Y2Ry?+sF!^HKQiBXCUSe&0M.b%rI'7d)o4~VfZ*{#:}ETt$3J-zpc]lnh8,GwP_ND|jO";
+    for(int i=0; i<strlen(nama); i++){
+        for(int j = 0 ; j<strlen(baseKey); j++){
+            if(nama[i] == baseKey[j]){
+                int indeks_baru = (j+10) % 94;
+                nama[i] = baseKey[indeks_baru];
+                break;
+            }
+        }
+    }
+}
+
+void dekripsi(char* nama)
+{
+    char baseKey[100] = "9(ku@AW1[Lmvgax6q`5Y2Ry?+sF!^HKQiBXCUSe&0M.b%rI'7d)o4~VfZ*{#:}ETt$3J-zpc]lnh8,GwP_ND|jO";
+    for(int i=0; i<strlen(nama); i++){
+        for(int j = 0 ; j<strlen(baseKey); j++){
+            if(nama[i] == baseKey[j]){
+                int indeks_baru = (j+(94-10)) % 94;
+                nama[i] = baseKey[indeks_baru];
+                break;
+            }
+        }
+    }
+}
 
 void reverse(char * x, int begin, int end) {
   char c;
@@ -160,8 +214,8 @@ static int _create(const char *path, mode_t mode, // Passthroguh BEBIIIII
 	return 0;
 }
 
-static int _utimens(const char *path, const struct timespec ts[2]// Passthroguh BEBIIII
-		       )
+static int _utimens(const char *path, const struct timespec ts[2])// Passthroguh BEBIIII
+
 {
 
 	int res;
