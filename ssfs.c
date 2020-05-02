@@ -35,16 +35,16 @@ int isEncv1(char* path){
     }
     token = strtok(NULL,"/");
   }
+  return 0;
 }
 
 void toLogFile(char* level,char* arg,int n,char* path){
-
   FILE *f;
   char log[1000];
   char waktu[100];
   time_t t = time(NULL);
   struct tm tm = *localtime(&t);
-  sprintf(waktu,"%d%02d%02d-%02d:%02d:%02d", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+  sprintf(waktu,"%s::%d%02d%02d-%02d:%02d:%02d",level, tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
   if(n == 1){
     sprintf(log,"%s::%s::%s\n",waktu,arg,path);
   }else if(n == 2){
@@ -65,11 +65,7 @@ void toLogFile(char* level,char* arg,int n,char* path){
   if(f == NULL)
     return;
   fputs(log,f);
-
   fclose(f);
-
-
-
 }
 
 void enkripsi(char* nama)
